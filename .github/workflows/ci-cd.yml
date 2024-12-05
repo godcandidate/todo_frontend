@@ -36,8 +36,4 @@ jobs:
       - name: Run Tests
         run: npm run lint
 
-      # Step 5: Build the application
-      - name: Build Project
-        run: npm run dev
-
 
