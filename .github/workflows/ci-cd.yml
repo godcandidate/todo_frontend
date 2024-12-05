@@ -1,0 +1,43 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - dev  # Run on every push to the 'dev' branch
+  pull_request:
+    branches:
+      - main  # Run on PRs targeting the 'main' branch
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Specify the Node.js version
+          cache: 'npm'      # Cache npm dependencies
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Step 4: Run lint and tests
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run lint
+
+      # Step 5: Build the application
+      - name: Build Project
+        run: npm run dev
+
+
