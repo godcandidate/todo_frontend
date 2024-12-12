@@ -55,8 +55,8 @@ export default function Home() {
   const handleUpdateTodo = async (data: TodoFormData) => {
     if (!editingTodo) return;
     try {
-      const updatedTodo = await api.updateTodo(editingTodo.id, data);
-      setTodos(todos.map((todo) => (todo.id === editingTodo.id ? updatedTodo : todo)));
+      const updatedTodo = await api.updateTodo(editingTodo._id, data);
+      setTodos(todos.map((todo) => (todo._id === editingTodo._id ? updatedTodo : todo)));
       setEditingTodo(null);
       toast({
         title: 'Success',
@@ -74,7 +74,7 @@ export default function Home() {
   const handleDeleteTodo = async (id: string) => {
     try {
       await api.deleteTodo(id);
-      setTodos(todos.filter((todo) => todo.id !== id));
+      setTodos(todos.filter((todo) => todo._id !== id));
       toast({
         title: 'Success',
         description: 'Todo deleted successfully',
@@ -88,10 +88,10 @@ export default function Home() {
     }
   };
 
-  const handleToggleComplete = async (id: string, completed: boolean) => {
+  const handleToggleComplete = async (id: string, active: boolean) => {
     try {
-      const updatedTodo = await api.updateTodo(id, { completed });
-      setTodos(todos.map((todo) => (todo.id === id ? updatedTodo : todo)));
+      const updatedTodo = await api.updateTodo(id, { active });
+      setTodos(todos.map((todo) => (todo._id === id ? updatedTodo : todo)));
     } catch (error) {
       toast({
         title: 'Error',
