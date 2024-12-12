@@ -98,7 +98,7 @@ export function TodoForm({ initialData, onSubmit, onCancel }: TodoFormProps) {
           type="checkbox"
           id="active"
           {...register('active')} // Register the field
-          defaultChecked={initialData?.active || false} // Default value for editing
+          defaultChecked={initialData?.active ?? true}
           className="h-4 w-4"
         />
         <label htmlFor="active" className="text-sm text-muted-foreground">
