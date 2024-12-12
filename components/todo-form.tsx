@@ -92,6 +92,20 @@ export function TodoForm({ initialData, onSubmit, onCancel }: TodoFormProps) {
         </PopoverContent>
       </Popover>
 
+      {/* Toggle for Active Status */}
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="active"
+          {...register('active')} // Register the field
+          defaultChecked={initialData?.active || false} // Default value for editing
+          className="h-4 w-4"
+        />
+        <label htmlFor="active" className="text-sm text-muted-foreground">
+          Active
+        </label>
+      </div>
+
       <div className="flex justify-end gap-2">
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
