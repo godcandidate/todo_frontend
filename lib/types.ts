@@ -1,11 +1,11 @@
 export interface Todo {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   priority: 'low' | 'medium' | 'high';
-  dueDate: string;
-  completed: boolean;
+  date: string;
+  active: boolean;
   category: string;
 }
 
-export type TodoFormData = Omit<Todo, 'id'>;
+export type TodoFormData = Omit<Todo, '_id'>;
