@@ -1,17 +1,15 @@
-'use client';
-
 import { Calendar, CheckCircle2, Circle, Pencil, Trash2 } from 'lucide-react';
 import { Todo } from '@/lib/types';
 import { Button } from './button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './card';
 import { Badge } from './badge';
-import { format } from 'date-fns';
 
 interface TodoCardProps {
   todo: Todo;
+  formattedDate: string; // Accept the formatted date as a prop
   onEdit: (todo: Todo) => void;
   onDelete: (id: string) => void;
-  onToggleComplete: (id: string, completed: boolean) => void;
+  onToggleComplete: (id: string, active: boolean) => void;
 }
 
 const priorityColors = {
@@ -20,8 +18,7 @@ const priorityColors = {
   high: 'bg-red-500',
 };
 
-export function TodoCard({ todo, onEdit, onDelete, onToggleComplete }: TodoCardProps) {
-  console.log(todo);
+export function TodoCard({ todo, formattedDate, onEdit, onDelete, onToggleComplete }: TodoCardProps) {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -29,15 +26,15 @@ export function TodoCard({ todo, onEdit, onDelete, onToggleComplete }: TodoCardP
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => onToggleComplete(todo.id, !todo.completed)}
+            onClick={() => onToggleComplete(todo._id, todo.active)}
           >
-            {todo.completed ? (
+            {todo.active ? (
               <CheckCircle2 className="h-5 w-5 text-green-500" />
             ) : (
               <Circle className="h-5 w-5" />
             )}
           </Button>
-          <span className={todo.completed ? 'line-through text-muted-foreground' : ''}>
+          <span className={!todo.active ? 'line-through text-muted-foreground' : ''}>
             {todo.title}
           </span>
         </CardTitle>
@@ -47,19 +44,20 @@ export function TodoCard({ todo, onEdit, onDelete, onToggleComplete }: TodoCardP
         </div>
       </CardHeader>
       <CardContent>
-        <p className={`text-sm ${todo.completed ? 'text-muted-foreground' : ''}`}>
+        <p className={`text-sm ${todo.active ? 'text-muted-foreground' : ''}`}>
           {todo.description}
         </p>
-        <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+        {/* Render the formatted date inside the CardContent */}
+        <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
           <Calendar className="h-4 w-4" />
-          {/* <span>{format(new Date(todo.dueDate), 'PPP')}</span> */}
+          <span>{formattedDate}</span> {/* Display the formatted date */}
         </div>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
         <Button size="icon" variant="ghost" onClick={() => onEdit(todo)}>
           <Pencil className="h-4 w-4" />
         </Button>
-        <Button size="icon" variant="ghost" onClick={() => onDelete(todo.id)}>
+        <Button size="icon" variant="ghost" onClick={() => onDelete(todo._id)}>
           <Trash2 className="h-4 w-4" />
         </Button>
       </CardFooter>
