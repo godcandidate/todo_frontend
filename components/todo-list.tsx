@@ -10,7 +10,7 @@ interface TodoListProps {
   todos: Todo[];
   onEdit: (todo: Todo) => void;
   onDelete: (id: string) => void;
-  onToggleComplete: (id: string, completed: boolean) => void;
+  onToggleComplete: (id: string, active: boolean) => void;
 }
 
 export function TodoList({ todos, onEdit, onDelete, onToggleComplete }: TodoListProps) {
@@ -23,8 +23,8 @@ export function TodoList({ todos, onEdit, onDelete, onToggleComplete }: TodoList
     const matchesSearch = todo.title.toLowerCase().includes(search.toLowerCase()) ||
                          todo.description.toLowerCase().includes(search.toLowerCase());
     const matchesStatus = filter === 'all' ? true :
-                         filter === 'completed' ? todo.completed :
-                         !todo.completed;
+                         filter === 'active' ? todo.active :
+                         !todo.active;
     const matchesCategory = categoryFilter === 'all' ? true :
                            todo.category === categoryFilter;
     const matchesPriority = priorityFilter === 'all' ? true :
@@ -32,6 +32,18 @@ export function TodoList({ todos, onEdit, onDelete, onToggleComplete }: TodoList
 
     return matchesSearch && matchesStatus && matchesCategory && matchesPriority;
   });
+
+  // Add the formatDate function to format the date
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  };
+  return date.toLocaleDateString('en-US', options); // This will give you a format like "Monday, 20th November, 2024"
+};
 
   return (
     <div className="space-y-4">
@@ -82,12 +94,14 @@ export function TodoList({ todos, onEdit, onDelete, onToggleComplete }: TodoList
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredTodos.map((todo) => (
           <TodoCard
-            key={todo.id}
+            key={todo._id}
             todo={todo}
+            formattedDate={formatDate(todo.date)} 
             onEdit={onEdit}
             onDelete={onDelete}
             onToggleComplete={onToggleComplete}
           />
+          
         ))}
       </div>
     </div>
