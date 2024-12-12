@@ -21,7 +21,7 @@ interface TodoFormProps {
 
 export function TodoForm({ initialData, onSubmit, onCancel }: TodoFormProps) {
   const [date, setDate] = useState<Date | undefined>(
-    initialData?.dueDate ? new Date(initialData.dueDate) : undefined
+    initialData?.date ? new Date(initialData.date) : undefined
   );
 
   const { register, handleSubmit, setValue } = useForm<TodoFormData>({
@@ -31,7 +31,7 @@ export function TodoForm({ initialData, onSubmit, onCancel }: TodoFormProps) {
   const onSubmitForm = (data: TodoFormData) => {
     onSubmit({
       ...data,
-      dueDate: date?.toISOString() || new Date().toISOString(),
+      date: date?.toISOString() || new Date().toISOString(),
     });
   };
 
