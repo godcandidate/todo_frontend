@@ -8,7 +8,7 @@ export async function fetchTodos() {
   return response.json();
 }
 
-export async function createTodo(todo: Omit<Todo, 'id'>) {
+export async function createTodo(todo: Omit<Todo, '_id'>) {
   const response = await fetch(`${API_BASE_URL}/add`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -18,8 +18,8 @@ export async function createTodo(todo: Omit<Todo, 'id'>) {
   return response.json();
 }
 
-export async function updateTodo(id: string, todo: Partial<Todo>) {
-  const response = await fetch(`${API_BASE_URL}/todos/${id}`, {
+export async function updateTodo(_id: string, todo: Partial<Todo>) {
+  const response = await fetch(`${API_BASE_URL}/${_id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(todo),
@@ -28,15 +28,15 @@ export async function updateTodo(id: string, todo: Partial<Todo>) {
   return response.json();
 }
 
-export async function deleteTodo(id: string) {
-  const response = await fetch(`${API_BASE_URL}/todos/${id}`, {
+export async function deleteTodo(_id: string) {
+  const response = await fetch(`${API_BASE_URL}/${_id}`, {
     method: 'DELETE',
   });
   if (!response.ok) throw new Error('Failed to delete todo');
 }
 
 export async function searchTodos(query: string) {
-  const response = await fetch(`${API_BASE_URL}/todos/search?q=${encodeURIComponent(query)}`);
+  const response = await fetch(`${API_BASE_URL}/search?q=${encodeURIComponent(query)}`);
   if (!response.ok) throw new Error('Failed to search todos');
   return response.json();
 }
