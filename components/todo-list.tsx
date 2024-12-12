@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Todo } from '@/lib/types';
 import { TodoCard } from '@/components/ui/todo-card';
 import { Input } from '@/components/ui/input';
@@ -18,32 +18,43 @@ export function TodoList({ todos, onEdit, onDelete, onToggleComplete }: TodoList
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>(todos);
 
-  const filteredTodos = todos.filter((todo) => {
-    const matchesSearch = todo.title.toLowerCase().includes(search.toLowerCase()) ||
-                         todo.description.toLowerCase().includes(search.toLowerCase());
-    const matchesStatus = filter === 'all' ? true :
-                         filter === 'active' ? todo.active :
-                         !todo.active;
-    const matchesCategory = categoryFilter === 'all' ? true :
-                           todo.category === categoryFilter;
-    const matchesPriority = priorityFilter === 'all' ? true :
-                           todo.priority === priorityFilter;
-
-    return matchesSearch && matchesStatus && matchesCategory && matchesPriority;
-  });
-
-  // Add the formatDate function to format the date
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
+  // Format the date for display
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    };
+    return date.toLocaleDateString('en-US', options); // Format like "Monday, 20th November, 2024"
   };
-  return date.toLocaleDateString('en-US', options); // This will give you a format like "Monday, 20th November, 2024"
-};
+
+  // Filter todos whenever search, filters, or todos change
+  useEffect(() => {
+    const filtered = todos.filter((todo) => {
+      const matchesSearch =
+        todo.title.toLowerCase().includes(search.toLowerCase()) ||
+        todo.description.toLowerCase().includes(search.toLowerCase());
+
+      const matchesStatus =
+        filter === 'all'
+          ? true
+          : filter === 'active'
+          ? todo.active
+          : !todo.active;
+
+      const matchesCategory = categoryFilter === 'all' ? true : todo.category === categoryFilter;
+
+      const matchesPriority = priorityFilter === 'all' ? true : todo.priority === priorityFilter;
+
+      return matchesSearch && matchesStatus && matchesCategory && matchesPriority;
+    });
+
+    setFilteredTodos(filtered);
+  }, [search, filter, categoryFilter, priorityFilter, todos]);
 
   return (
     <div className="space-y-4">
@@ -53,7 +64,7 @@ const formatDate = (dateString: string) => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        
+
         <Select onValueChange={(value: 'all' | 'active' | 'completed') => setFilter(value)} defaultValue="all">
           <SelectTrigger>
             <SelectValue placeholder="Filter by status" />
@@ -94,14 +105,13 @@ const formatDate = (dateString: string) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredTodos.map((todo) => (
           <TodoCard
-            key={todo._id}
+            key={todo._id || '1'} // Ensure each child has a unique key
             todo={todo}
-            formattedDate={formatDate(todo.date)} 
+            formattedDate={formatDate(todo.date)}
             onEdit={onEdit}
             onDelete={onDelete}
             onToggleComplete={onToggleComplete}
           />
-          
         ))}
       </div>
     </div>
