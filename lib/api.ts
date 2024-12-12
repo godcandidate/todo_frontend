@@ -1,15 +1,15 @@
 import { Todo } from "./types";
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'http://localhost:4000/api/v1/todos';
 
 export async function fetchTodos() {
-  const response = await fetch(`${API_BASE_URL}/todos`);
+  const response = await fetch(`${API_BASE_URL}`);
   if (!response.ok) throw new Error('Failed to fetch todos');
   return response.json();
 }
 
 export async function createTodo(todo: Omit<Todo, 'id'>) {
-  const response = await fetch(`${API_BASE_URL}/todos`, {
+  const response = await fetch(`${API_BASE_URL}/add`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(todo),
