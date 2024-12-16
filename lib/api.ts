@@ -1,6 +1,11 @@
 import { Todo } from "./types";
 
-const API_BASE_URL = 'http://localhost:4000/api/v1/todos';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+if (!API_BASE_URL) {
+  throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined in your .env file.");
+}
+
 
 export async function fetchTodos() {
   const response = await fetch(`${API_BASE_URL}`);
