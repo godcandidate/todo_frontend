@@ -36,8 +36,8 @@ export default function Home() {
 
   const handleCreateTodo = async (data: TodoFormData) => {
     try {
-      const newTodo = await api.createTodo(data);
-      setTodos([...todos, newTodo]);
+      await api.createTodo(data);
+      await loadTodos(); // Refresh todos from server
       setIsFormOpen(false);
       toast({
         title: 'Success',
@@ -55,8 +55,8 @@ export default function Home() {
   const handleUpdateTodo = async (data: TodoFormData) => {
     if (!editingTodo) return;
     try {
-      const updatedTodo = await api.updateTodo(editingTodo.id, data);
-      setTodos(todos.map((todo) => (todo.id === editingTodo.id ? updatedTodo : todo)));
+      await api.updateTodo(editingTodo.id, data);
+      await loadTodos(); // Refresh todos from server
       setEditingTodo(null);
       toast({
         title: 'Success',
@@ -90,8 +90,8 @@ export default function Home() {
 
   const handleToggleComplete = async (id: string, active: boolean) => {
     try {
-      const updatedTodo = await api.updateTodo(id, { active });
-      setTodos(todos.map((todo) => (todo.id === id ? updatedTodo : todo)));
+      await api.updateTodo(id, { active });
+      await loadTodos(); // Refresh todos from server
     } catch (error) {
       toast({
         title: 'Error',
