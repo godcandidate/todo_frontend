@@ -26,7 +26,7 @@ export function TodoCard({ todo, formattedDate, onEdit, onDelete, onToggleComple
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => onToggleComplete(todo._id, todo.active)}
+            onClick={() => onToggleComplete(todo.id, todo.active)}
           >
             {todo.active ? (
               <CheckCircle2 className="h-5 w-5 text-green-500" />
@@ -57,7 +57,7 @@ export function TodoCard({ todo, formattedDate, onEdit, onDelete, onToggleComple
         <Button size="icon" variant="ghost" onClick={() => onEdit(todo)}>
           <Pencil className="h-4 w-4" />
         </Button>
-        <Button size="icon" variant="ghost" onClick={() => onDelete(todo._id)}>
+        <Button size="icon" variant="ghost" onClick={() => onDelete(todo.id)}>
           <Trash2 className="h-4 w-4" />
         </Button>
       </CardFooter>

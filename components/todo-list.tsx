@@ -105,7 +105,7 @@ export function TodoList({ todos, onEdit, onDelete, onToggleComplete }: TodoList
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredTodos.map((todo) => (
           <TodoCard
-            key={todo._id || '1'} // Ensure each child has a unique key
+            key={todo.id || '1'} // Ensure each child has a unique key
             todo={todo}
             formattedDate={formatDate(todo.date)}
             onEdit={onEdit}

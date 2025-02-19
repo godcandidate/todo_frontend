@@ -13,7 +13,7 @@ export async function fetchTodos() {
   return response.json();
 }
 
-export async function createTodo(todo: Omit<Todo, '_id'>) {
+export async function createTodo(todo: Omit<Todo, 'id'>) {
   const response = await fetch(`${API_BASE_URL}/add`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -23,8 +23,8 @@ export async function createTodo(todo: Omit<Todo, '_id'>) {
   return response.json();
 }
 
-export async function updateTodo(_id: string, todo: Partial<Todo>) {
-  const response = await fetch(`${API_BASE_URL}/${_id}`, {
+export async function updateTodo(id: string, todo: Partial<Todo>) {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(todo),
@@ -33,8 +33,8 @@ export async function updateTodo(_id: string, todo: Partial<Todo>) {
   return response.json();
 }
 
-export async function deleteTodo(_id: string) {
-  const response = await fetch(`${API_BASE_URL}/${_id}`, {
+export async function deleteTodo(id: string) {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) throw new Error('Failed to delete todo');
